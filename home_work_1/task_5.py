@@ -1,18 +1,34 @@
-def count_find_num(primes: list, limit: int) -> list:
-    primes_digit = 1
-    for i in primes:
-        primes_digit *= i
-    step = limit // primes_digit
-    count = 0
-    max_n = 0
-    for i in range(1, step + 1):
-        x = i
-        for j in primes:
-            while x % j == 0:
-                x //= j
-        if x == 1:
-            count +=1
-            max_n = i * primes_digit
-    if count == 0:
+from functools import reduce
+
+
+def count_find_num(primesL: list, limit: int):
+    if reduce(lambda x, y: x * y, primesL) > limit:
         return []
-    return [count, max_n]
+    result = []
+    result.append(reduce(lambda x, y: x * y, primesL))
+    for i in primesL:
+        for j in result:
+            j *= i
+            while j <= limit and j not in result:
+                result.append(j)
+                j *= i
+    return [len(result), max(result)]
+
+
+#________________________________________________________#
+from math import prod
+
+
+def count_find_num(primesL: list, limit: int):
+    all_digits = []
+    total = prod(primesL)
+    all_digits.append(total)
+    if total > limit:
+        return []
+
+    for i in primesL:
+        for total in all_digits:
+            value = i * total
+            if value <= limit and value not in all_digits:
+                all_digits.append(value)
+    return [len(all_digits), max(all_digits)]
