@@ -1,5 +1,4 @@
 from random import choice
-from termcolor import colored
 
 
 def draw_board(board):
@@ -53,24 +52,24 @@ def cancel_step(step):
 
 def result():
     for combination in combinations:
-        if combination in [
+        if all([
             board[combination[0] - 1] == "X", board[combination[1] - 1] == "X",
             board[combination[2] - 1] == "X", board[combination[3] - 1] == "X",
             board[combination[4] - 1] == "X"
-        ]:
+        ]):
             return '0'
-        elif combination in [
+        if all([
             board[combination[0] - 1] == "0", board[combination[1] - 1] == "0",
             board[combination[2] - 1] == "0", board[combination[3] - 1] == "0",
             board[combination[4] - 1] == "0"
-        ]:
+        ]):
             return 'X'
     return False
 
 
 def take_input():
     global step
-    variants_to_step = [i for i in board if str(i) not in 'XO']
+    variants_to_step = [i for i in board if str(i) not in 'X0']
     try:
         step = input("Куда поставим " + 'X' + "? :")
         step = int(step)
@@ -82,13 +81,13 @@ def take_input():
 
 
 def computer():
-    variants_to_step = [i for i in board if str(i) not in 'XO']
+    variants_to_step = [i for i in board if str(i) not in 'X0']
     if not variants_to_step:
         return 'no more moves'
     for variant in range(len(variants_to_step)):
         v = choice(variants_to_step)
         variants_to_step.remove(v)
-        step_on_board(v, 'O')
+        step_on_board(v, '0')
         if not result():
             cancel_step(v)
             return v
