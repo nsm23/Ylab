@@ -27,11 +27,19 @@ def func_decorator_repeat(call_count: int,
                 print(f'Run № {i} - '
                       f'waiting {start_sleep_time} - '
                       f'result of the decorated function {result}')
-                start_sleep_time *= pow(2, factor)
-                if border_sleep_time <= start_sleep_time:
-                    start_sleep_time = border_sleep_time
+                if start_sleep_time < border_sleep_time:
+                    start_sleep_time *= pow(2, factor)
+                    if start_sleep_time >= border_sleep_time:
+                        start_sleep_time = border_sleep_time
             print('Finish')
 
         return wrapper
 
     return inner
+
+
+@func_decorator_repeat(5,1,1,8)
+def func(num):
+    return num + 10
+a = func(5)
+print(a)
