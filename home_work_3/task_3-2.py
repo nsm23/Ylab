@@ -38,8 +38,3 @@ def func_decorator_repeat(call_count: int,
     return inner
 
 
-@func_decorator_repeat(5,1,1,8)
-def func(num):
-    return num + 10
-a = func(5)
-print(a)
