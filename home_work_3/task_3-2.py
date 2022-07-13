@@ -11,7 +11,6 @@ border_sleep_time - граничное время ожидания.
 t = start_sleep_time * 2^(n) if t < border_sleep_time
 t = border_sleep_time if t >= border_sleep_time"""
 import time
-from math import pow
 
 
 def func_decorator_repeat(call_count: int,
@@ -28,7 +27,7 @@ def func_decorator_repeat(call_count: int,
                       f'waiting {start_sleep_time} - '
                       f'result of the decorated function {result}')
                 if start_sleep_time < border_sleep_time:
-                    start_sleep_time *= pow(2, factor)
+                    start_sleep_time *= factor
                     if start_sleep_time >= border_sleep_time:
                         start_sleep_time = border_sleep_time
             print('Finish')
