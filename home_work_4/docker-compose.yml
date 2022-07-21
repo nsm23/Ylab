@@ -34,7 +34,7 @@ services:
       retries: 100
 
   ylab_postgres_db:
-    container_name: ylab_postgres_db
+    container_name: ylab_postgres_db_3
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data/
