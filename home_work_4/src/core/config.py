@@ -4,8 +4,8 @@ from pathlib import Path
 VERSION: str = "1.0.0"
 
 # JWT SETTINGS
-JWT_SECRET_KEY: str = os.getenv('JWT_SECRET_KEY')
-JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
+JWT_SECRET_KEY: str = os.getenv('JWT_SECRET_KEY', 'foo')
+JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", 'HS256')
 
 # Название проекта. Используется в Swagger-документации
 PROJECT_NAME: str = os.getenv("PROJECT_NAME", "ylab_hw_3")
