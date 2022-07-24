@@ -14,8 +14,8 @@ def user_create(
         user: UserCreate,
         user_service: UserService = Depends(get_user_service),
 ) -> dict:
-    res = user_service.create_user(user=user)
-    return res
+    context = user_service.create_user(user=user)
+    return context
 
 
 @router.post(path="/login", summary="Login", tags=["users"],)

@@ -2,6 +2,10 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr, UUID4
 
+__all__ = ('UserBase', 'UserCreate',
+           'UserUpdate', 'AboutUser',
+           'UserLogin')
+
 
 class UserBase(BaseModel):
     username: str
@@ -10,18 +14,10 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
     email: EmailStr
-    is_active: Optional[bool] = True
-    is_superuser: Optional[bool] = False
 
 
 class UserUpdate(UserBase):
     email: EmailStr
-    password: Optional[str] = None
-    is_active: Optional[bool] = None
-
-
-class UserDelete(UserBase):
-    password: str
 
 
 class AboutUser(UserBase):
@@ -29,9 +25,8 @@ class AboutUser(UserBase):
     password: str
     email: EmailStr
     created_at: datetime
-    is_active: Optional[bool] = True
+    is_superuser: bool
 
 
-class UserLogin(BaseModel):
-    username: str
+class UserLogin(UserBase):
     password: str
