@@ -18,7 +18,7 @@ class User(SQLModel, table=True):
     __table_args__ = (UniqueConstraint("username"),
                       UniqueConstraint("email")
                       )
-    uuid: str = Field(default=create_uuid, primary_key=True, nullable=False)
+    uuid: str = Field(default_factory=create_uuid, primary_key=True, nullable=False)
     username: str = Field(nullable=False, max_length=12)
     email: str = Field(nullable=False)
     password: str = Field(nullable=False)

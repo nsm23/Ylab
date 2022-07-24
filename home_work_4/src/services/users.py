@@ -30,9 +30,9 @@ class UserService(ServiceMixin):
         self.session.refresh(new_user)
         return {"msg": "User create.", "user": new_user}
 
-    def user_detail(self, _jwt) -> Optional[dict]:
-        _jwt.jwt_required()
-        current_user = _jwt.get_jwt_subject()
+    def user_detail(self, jwt) -> Optional[dict]:
+        jwt.jwt_required()
+        current_user = jwt.get_jwt_subject()
         user_info = (
             self.session.query(User).filter(User.username == current_user).first()
         )
@@ -46,9 +46,9 @@ class UserService(ServiceMixin):
         )
         return {"user": context}
 
-    def user_change(self, _jwt, user: UserUpdate):
-        _jwt.jwt_required()
-        current_username = _jwt.get_jwt_subject()
+    def user_change(self, jwt, user: UserUpdate):
+        jwt.jwt_required()
+        current_username = jwt.get_jwt_subject()
         current_user = (
             self.session.query(User).filter(User.username == current_username).first()
         )
@@ -67,12 +67,12 @@ class UserService(ServiceMixin):
         self.session.add(current_user)
         self.session.commit()
         self.session.refresh(current_user)
-        jti = _jwt.get_raw_jwt()["jti"]
+        jti = jwt.get_raw_jwt()["jti"]
         blocked_access_tokens.setex(jti, settings.access_expires, "true")
-        access_token = _jwt.create_access_token(subject=user.username)
+        access_token = jwt.create_access_token(subject=user.username)
         return {"user": context, "access_token": access_token}
 
-    def login(self, _jwt, user: UserLogin) -> dict:
+    def login(self, jwt, user: UserLogin) -> dict:
         check_user = (
             self.session.query(User).filter(User.username == user.username).first()
         )
@@ -86,27 +86,27 @@ class UserService(ServiceMixin):
             .first()
             .uuid
         )
-        access_token = _jwt.create_access_token(subject=user.username)
-        refresh_token = _jwt.create_refresh_token(subject=user.username)
+        access_token = jwt.create_access_token(subject=user.username)
+        refresh_token = jwt.create_refresh_token(subject=user.username)
         active_refresh_tokens.sadd(user_uuid, refresh_token)
         return {"access_token": access_token, "refresh_token": refresh_token}
 
-    def logout(self, _jwt):
-        _jwt.jwt_refresh_token_required()
-        current_username = _jwt.get_jwt_subject()
+    def logout(self, jwt):
+        jwt.jwt_refresh_token_required()
+        current_username = jwt.get_jwt_subject()
         user_uuid = (
             self.session.query(User)
             .filter(User.username == current_username)
             .first()
             .uuid
         )
-        payload = _jwt.get_raw_jwt()
+        payload = jwt.get_raw_jwt()
         active_refresh_tokens.srem(user_uuid, get_token_from_payload(payload))
         return {"msg": "User logout"}
 
-    def logout_all(self, _jwt):
-        _jwt.jwt_refresh_token_required()
-        current_username = _jwt.get_jwt_subject()
+    def logout_all(self, jwt):
+        jwt.jwt_refresh_token_required()
+        current_username = jwt.get_jwt_subject()
         user_uuid = (
             self.session.query(User)
             .filter(User.username == current_username)
@@ -116,25 +116,25 @@ class UserService(ServiceMixin):
         active_refresh_tokens.delete(user_uuid)
         return {"msg": "Logout all devices"}
 
-    def refresh(self, _jwt) -> dict:
-        _jwt.jwt_refresh_token_required()
-        current_username = _jwt.get_jwt_subject()
+    def refresh(self, jwt) -> dict:
+        jwt.jwt_refresh_token_required()
+        current_username = jwt.get_jwt_subject()
         user_uuid = (
             self.session.query(User)
             .filter(User.username == current_username)
             .first()
             .uuid
         )
-        payload = _jwt.get_raw_jwt()
-        new_access_token = _jwt.create_access_token(subject=current_username)
-        new_refresh_token = _jwt.create_refresh_token(subject=current_username)
+        payload = jwt.get_raw_jwt()
+        new_access_token = jwt.create_access_token(subject=current_username)
+        new_refresh_token = jwt.create_refresh_token(subject=current_username)
         active_refresh_tokens.sadd(user_uuid, new_refresh_token)
         active_refresh_tokens.srem(user_uuid, get_token_from_payload(payload))
         return {"access_token": new_access_token, "refresh_token": new_refresh_token}
 
 
 def get_token_from_payload(payload: dict):
-    return jwt.encode(payload, settings.authjwt_secret_key, JWT_ALGORITHM)
+    return jwt.encode(payload, settings.jwt_secret_key, JWT_ALGORITHM)
 
 
 @lru_cache()

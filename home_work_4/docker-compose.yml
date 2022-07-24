@@ -34,7 +34,7 @@ services:
       retries: 100
 
   ylab_postgres_db:
-    container_name: ylab_postgres_db_3
+    container_name: ylab_postgres_db_4
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -43,9 +43,9 @@ services:
       - POSTGRES_USER=ylab_hw
       - POSTGRES_PASSWORD=ylab_hw
     expose:
-      - 5432
+      - 5430
     ports:
-      - "5432:5432"
+      - "5430:5430"
     networks:
       - ylab_network
     healthcheck:

@@ -8,5 +8,5 @@ class Token(BaseModel):
 
 
 class TokenPayLoad(BaseModel):
-    sub: Optional[int] = None
+    sub: Optional[str] = None
 
