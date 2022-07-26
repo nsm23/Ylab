@@ -1,5 +1,5 @@
 ## Базовый образ для сборки
-FROM python:3.9
+FROM python:3.9.10-slim
 
 # Указываем рабочую директорию
 WORKDIR /usr/src/app
