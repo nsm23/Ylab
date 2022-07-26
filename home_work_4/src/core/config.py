@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-
 VERSION: str = "1.1.0"
 
 # JWT SETTINGS
@@ -25,7 +24,8 @@ POSTGRES_DB: str = os.getenv("POSTGRES_DB", "ylab_hw")
 POSTGRES_USER: str = os.getenv("POSTGRES_USER", "ylab_hw")
 POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "ylab_hw")
 
-DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+DATABASE_URL: str = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}" \
+                    f"@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 # Корень проекта
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -10,7 +10,7 @@ from src.core.jwt import create_access_token, create_refresh_token
 from src.services import UserService, get_user_service
 
 router = APIRouter()
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/users/login", scheme_name="JWT")
 
 
 @router.post(
