@@ -12,7 +12,6 @@ __all__ = (
 class PostBase(BaseModel):
     title: str
     description: str
-    author_id: int
 
 
 class PostCreate(PostBase):

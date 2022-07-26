@@ -1,11 +1,13 @@
 import os
 from pathlib import Path
 
-VERSION: str = "1.0.0"
+
+VERSION: str = "1.1.0"
 
 # JWT SETTINGS
-JWT_SECRET_KEY: str = os.getenv('JWT_SECRET_KEY', 'foo')
-JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", 'HS256')
+JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "foo")
+JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = 5
 
 # Название проекта. Используется в Swagger-документации
 PROJECT_NAME: str = os.getenv("PROJECT_NAME", "ylab_hw_3")
@@ -14,11 +16,12 @@ PROJECT_NAME: str = os.getenv("PROJECT_NAME", "ylab_hw_3")
 REDIS_HOST: str = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT: int = int(os.getenv("REDIS_PORT", 6379))
 CACHE_EXPIRE_IN_SECONDS: int = 60 * 5  # 5 минут
+REFRESH_TOKENS_EXPIRE_IN_SECONDS: int = 60 * 60 * 24 * 30  # 30 Дней
 
 # Настройки Postgres
 POSTGRES_HOST: str = os.getenv("POSTGRES_HOST", "localhost")
 POSTGRES_PORT: int = int(os.getenv("POSTGRES_PORT", 5432))
-POSTGRES_DB: str = os.getenv("POSTGRES_DB", "ylab_test")
+POSTGRES_DB: str = os.getenv("POSTGRES_DB", "ylab_hw")
 POSTGRES_USER: str = os.getenv("POSTGRES_USER", "ylab_hw")
 POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "ylab_hw")
 
