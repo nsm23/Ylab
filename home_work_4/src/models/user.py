@@ -25,6 +25,3 @@ class User(SQLModel, table=True):
     is_active: bool = Field(default=True, nullable=False)
     is_superuser: bool = Field(default=False, nullable=False)
 
-    class Config:
-        orm_mode = True
-
